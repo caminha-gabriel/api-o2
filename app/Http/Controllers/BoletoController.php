@@ -8,11 +8,11 @@ use App\Services\BoletoService;
 class BoletoController extends Controller
 {
     public function calcular(Request $request) {
-        $payload = $request->validate([
-            'valor'          => 'required|numeric',
-            'vencimento'     => 'required|date',
-            'data_pagamento' => 'required|date',
-            'parcelas'       => 'nullable|integer|min:1',
+        $request->validate([
+            'valor'          => 'required|numeric|min:0.01',
+            'vencimento'     => 'required|date|before_or_equal:data_pagamento',
+            'data_pagamento' => 'required|date|after_or_equal:vencimento',
+            'parcelas'       => 'nullable|integer|min:1|max:12',
         ]);
         
         $service = new BoletoService();
