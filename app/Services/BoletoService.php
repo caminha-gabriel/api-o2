@@ -20,4 +20,22 @@ class BoletoService
     private $multa;
     private $juros;
     private $valorTotal;
+
+    private function calcularAtraso() {
+        $this->diasAtrasado = max($this->vencimento->diffInDays($this->dataPagamento, false), 0);
+
+        if ($this->diasAtrasado > 0) {
+            $this->aplicarMulta();
+            $this->aplicarJuros();
+            $this->valorTotal = $this->valorOriginal + $this->multa + $this->juros;
+        }
+    }
+
+    private function aplicarMulta() {
+        $this->multa = $this->valorTotal * self::MULTA_PERCENTUAL;
+    }
+
+    private function aplicarJuros() {
+        $this->juros = $this->valorTotal * self::JUROS_DIA * $this->diasAtrasado;
+    }
 }
