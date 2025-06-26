@@ -15,15 +15,22 @@ class BoletoController extends Controller
             'parcelas'       => 'nullable|integer|min:1|max:12',
         ]);
         
-        $service = new BoletoService();
+        try {
+            $service = new BoletoService();
 
-        $resultado = $service->calcularBoleto(
-            $request['valor'],
-            $request['vencimento'],
-            $request['data_pagamento'],
-            $request['parcelas'] ?? null
-        );
+            $resultado = $service->calcularBoleto(
+                $request['valor'],
+                $request['vencimento'],
+                $request['data_pagamento'],
+                $request['parcelas'] ?? null
+            );
 
-        return response()->json($resultado);
+            return response()->json($resultado);
+        } catch (\Exception $e) {
+            return response()->json([
+                "error" => "Erro ao processar boleto",
+                "details" => $e->getMessage()
+            ]);
+        }
     }
 }
