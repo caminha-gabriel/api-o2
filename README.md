@@ -1,61 +1,110 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sobre a API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Esta API foi desenvolvida como teste técnico da O2 para realizar o cálculo do valor de boletos considerando:
+- Multa por atraso
+- Juros diários
+- Juros de parcelamento (opcional)
 
-## About Laravel
+### Requisitos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.0+
+- Laravel 11
+- Composer
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Instalando a API
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Clone o repositório:
 
-## Learning Laravel
+```bash
+git clone https://github.com/caminha-gabriel/api-o2
+cd api-o2
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2. Instale as dependências:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+composer install
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Configure o ambiente:
 
-## Laravel Sponsors
+```bash
+cp .env.example .env
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Executando a API
 
-### Premium Partners
+Suba o servidor do Laravel:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+php artisan serve
+```
 
-## Contributing
+Obs. Por padrão, a API estará disponível em:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+http://127.0.0.1:8000
+```
 
-## Code of Conduct
+# Estrutura Principal
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+app/
+├── Http/
+│   └── Controllers/
+│       └── BoletoController.php
+├── Services/
+│   └── BoletoService.php
+routes/
+└── api.php
+```
 
-## Security Vulnerabilities
+# Utilizando a API com o Postman
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Rota disponível
 
-## License
+```
+POST /api/calcular-boleto
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Exemplo de URL
+
+```
+http://127.0.0.1:8000/api/calcular-boleto
+```
+
+### Cabeçalhos (Headers)
+
+```
+Accept: application/json
+Content-Type: application/json
+```
+
+# Exemplo de Uso
+
+### Body da Requisição (JSON)
+
+```json
+{
+  "valor": 500.00,
+  "vencimento": "2024-06-01",
+  "data_pagamento": "2024-06-23",
+  "parcelas": 6
+}
+```
+
+### Exemplo de Retorno Esperado
+
+```json
+{
+    "valor_original": 500,
+    "dias_em_atraso": 22,
+    "multa": 10,
+    "juros": 3.63,
+    "valor_atualizado": 513.63,
+    "parcelas": 6,
+    "juros_parcelamento": 40.06,
+    "valor_total_com_juros": 553.69,
+    "valor_parcela": 92.28
+}
+```
