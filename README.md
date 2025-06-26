@@ -40,11 +40,7 @@ Suba o servidor do Laravel:
 php artisan serve
 ```
 
-Obs. Por padrão, a API estará disponível em:
-
-```
-http://127.0.0.1:8000
-```
+> Por padrão, a API estará disponível em: http://127.0.0.1:8000
 
 # Estrutura Principal
 
@@ -59,9 +55,9 @@ routes/
 └── api.php
 ```
 
-# Utilizando a API com o Postman
+# Utilizando a API
 
-### Rota disponível
+### Rota Disponível
 
 ```
 POST /api/calcular-boleto
@@ -77,10 +73,11 @@ http://127.0.0.1:8000/api/calcular-boleto
 
 ```
 Accept: application/json
-Content-Type: application/json
 ```
 
 # Exemplo de Uso
+
+> Recomendo utilizar uma ferramenta de requisições como o Postman.
 
 ### Body da Requisição (JSON)
 
