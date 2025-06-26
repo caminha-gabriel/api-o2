@@ -10,16 +10,16 @@ class BoletoService
     private const JUROS_DIA = 0.00033; // 0.033% ao dia
     private const JUROS_MENSAL_PARCELAMENTO = 0.013; // 1.3% ao mês
 
-    private $valorOriginal;
-    private $vencimento;
-    private $dataPagamento;
-    private $parcelas = null;
+    private float $valorOriginal;
+    private Carbon $vencimento;
+    private Carbon $dataPagamento;
+    private ?int $parcelas = null;
 
-    private $diasAtrasado;
+    private int $diasAtrasado;
 
-    private $multa;
-    private $juros;
-    private $valorTotal;
+    private float $multa;
+    private float $juros;
+    private float $valorTotal;
 
     private function calcularAtraso() {
         $this->diasAtrasado = max($this->vencimento->diffInDays($this->dataPagamento, false), 0);
